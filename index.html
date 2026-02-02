@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DJZ Studio</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <div class="logo-mark">DJZ</div>
+            <div class="logo-text">Studio</div>
+        </div>
+
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#portfolio">Portfolio</a>
+            <a href="#services">Services</a>
+            <a href="#contact">Contact</a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- HOME -->
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <div class="hero-pill">
+                    <span class="hero-pill-dot"></span>
+                    Student-focused creative & digital studio
+                </div>
+
+                <h1 class="hero-title">
+                    Minimal, thoughtful visuals<br />and clean digital spaces.
+                </h1>
+
+                <p class="hero-subtitle">
+                    DJZ is a one‑person studio crafting photography, dance visuals, and portfolio websites for students.
+                </p>
+
+                <div class="hero-actions">
+                    <a href="#portfolio" class="btn btn-primary">View portfolio</a>
+                    <a href="#services" class="btn btn-ghost">See services</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- PORTFOLIO -->
+        <section id="portfolio" class="section">
+            <h2 class="section-heading">Portfolio</h2>
+            <p class="section-subtitle">
+                A small, growing collection of work across photography, dance visuals, and digital layouts.
+            </p>
+
+            <div class="portfolio-grid">
+                <div class="card">
+                    <div class="card-label">Photography</div>
+                    <div class="card-placeholder">PHOTO WORK</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-label">Dance Visuals</div>
+                    <div class="card-placeholder">DANCE CLIPS</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-label">Web</div>
+                    <div class="card-placeholder">WEBSITE MOCKUP</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-label">Design</div>
+                    <div class="card-placeholder">RESUME → SITE</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SERVICES -->
+        <section id="services" class="section">
+            <h2 class="section-heading">Services & Pricing</h2>
+
+            <div class="services-layout">
+                <div>
+                    <h3 class="service-group-title">DJZ Medias</h3>
+                    <ul class="service-list">
+                        <li class="service-item">
+                            <span>Headshots</span><span>$20–$25</span>
+                        </li>
+                        <li class="service-item">
+                            <span>Grad photos</span><span>$35–$50</span>
+                        </li>
+                        <li class="service-item">
+                            <span>Concept shoot</span><span>$30–$40</span>
+                        </li>
+                        <li class="service-item">
+                            <span>Dance video</span><span>$40–$50</span>
+                        </li>
+                    </ul>
+
+                    <h3 class="service-group-title">DJZ Codes</h3>
+                    <ul class="service-list">
+                        <li class="service-item">
+                            <span>Portfolio website</span><span>$30–$40</span>
+                        </li>
+                        <li class="service-item">
+                            <span>Digital resume</span><span>$15–$20</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section id="contact" class="section">
+            <h2 class="section-heading">Contact</h2>
+
+            <form class="contact-form">
+                <label>Name</label>
+                <input type="text" placeholder="Your name" />
+
+                <label>Email</label>
+                <input type="email" placeholder="you@example.com" />
+
+                <label>Service</label>
+                <select>
+                    <option>Select an option</option>
+                    <option>Headshots</option>
+                    <option>Grad photos</option>
+                    <option>Dance video</option>
+                    <option>Portfolio website</option>
+                    <option>Digital resume</option>
+                </select>
+
+                <label>Message</label>
+                <textarea placeholder="Tell me what you need"></textarea>
+
+                <button class="btn btn-primary" type="submit">Send</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        © <span id="year"></span> DJZ Studio
+    </footer>
+
+    <!-- JS -->
+    <script src="script.js"></script>
+</body>
+</html>
