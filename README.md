@@ -32,7 +32,7 @@ You may view the code, but **you may not copy, reuse, modify, or redistribute it
 ## 📬 Contact
 For inquiries or collaborations:
 - Instagram: **@djz.medias** · **@djz.codes**
-- Email: *dwumendez@gmai.com*
+- Email: *dwumendez@gmail.com*, *dwumendez@ucsd.edu*
 
 ---
 Built with intention as DJZ Studio continues to grow.
