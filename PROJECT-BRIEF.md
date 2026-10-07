@@ -40,7 +40,10 @@ explicitly rejected that framing as overclaiming.
 
 Light, warm, premium. Never a dark theme — that was rejected twice.
 
-Tokens live in `src/index.css` under `@theme`. Use them; don't hardcode hex.
+Tokens live at the top of `css/style.css` under `:root`. Use them; don't
+hardcode hex. Tints and shadows are mixed from the tokens with `color-mix()`,
+and the JS reads the few colors it needs (canvas frames, lens shader) from
+the same tokens.
 
 | Token | Use |
 |---|---|
@@ -64,7 +67,7 @@ Tokens live in `src/index.css` under `@theme`. Use them; don't hardcode hex.
 ### Brand palette (supplied 2026-09-12, not yet applied)
 
 The official DJZ palette. Once applied it replaces the brown/parchment
-neutrals above; until then `index.css` still holds the old values.
+neutrals above; until then `css/style.css` still holds the old values.
 
 | Hex | Name | Proposed role | Contrast on `#f8f4ee` |
 |---|---|---|---|
@@ -83,19 +86,23 @@ neutrals above; until then `index.css` still holds the old values.
   hue. Ask Denise before applying.
 - Moving text from warm brown to green-slate cools the site. Check that it
   still reads as warm and premium once applied.
-- About 20 hex values are hardcoded in components (gradients, Three.js
-  materials, film-strip darks). Move them onto tokens when applying the
-  palette.
+- Every color is already on a token (done in the 2026-10-06 rebuild), so
+  applying the palette means changing token values in `:root`, plus the
+  `theme-color` meta in `index.html`. Per-project `palette` arrays in
+  `js/data.js` are artwork for the drawn frames, not UI colors.
+- Related: `photo` amber (`#b8791c`) is about 3.6 : 1 on cream, below AA for
+  the small labels and chips that use it. Worth settling in the same pass.
 
 ---
 
 ## The logo
 
-`public/img/djz-logo.png` — gold DJZ monogram with an aperture in the D, film
+`img/djz-logo.png` — gold DJZ monogram with an aperture in the D, film
 strip through the J, circuit traces in the Z. Background is already keyed out.
 
 Never put it on a black box or dark plate — that was tried and rejected. To
-make it read on cream, use a warm radial halo behind it plus this filter:
+make it read on cream, use a warm radial halo behind it plus this filter
+(it's the `--logo-filter` token):
 
 ```
 saturate(1.16) contrast(1.1) brightness(.93)
@@ -107,7 +114,7 @@ Source files in `logo/`: **none are actually transparent.** `djz-logo.png`
 is on solid white; `circle-logo.png` and the screenshot are on solid black.
 The `A….png` files are AVIFs with a `.png` extension and no alpha channel
 (`A4efec…` and its `(1)` copy are identical). The only transparent asset is
-`public/img/djz-logo.png`, and it is the monogram **without** the
+`img/djz-logo.png`, and it is the monogram **without** the
 "FILM · PHOTO · TECH · ART" tagline. A transparent version with the tagline
 still has to be produced. Keying the black-background export gives the
 cleanest edges.
@@ -117,30 +124,38 @@ cleanest edges.
 ## Structure
 
 ```
-landing   3D DSLR (Three.js primitives). Lens is clickable, runs a GLSL
-          shader: breathing aperture, circuit traces, design grid, pixels.
-          Above it: availability pill, her name, the four roles.
-          Below it: the pitch line and four craft chips.
+landing   3D DSLR built from stacked CSS 3D layers (js/camera.js). Lens is
+          clickable; the glass is a WebGL canvas running a GLSL shader:
+          breathing aperture, circuit traces, design grid, pixels.
+          Desktop: availability pill, her name, the four roles above it;
+          the pitch line and four craft chips below.
+          Phones: name -> availability -> pitch -> crafts -> camera.
    |      click the lens -> shutter flash
-polaroid  a Polaroid ejects and develops -> "Get to know my world."
+polaroid  a Polaroid ejects and develops -> "Get to know my world."   #shot
    |
-home      three parallax room cards (Film / Photography / Tech)
+home      three parallax room cards (Film / Photography / Tech)       #home
           then About, Studio, Contact on the same scroll
    |
-film      draggable horizontal film strip, hover reveals detail
-photo     masonry gallery, click zooms via shared layout
-tech      floating case-study cards tagged UI/UX / Figma / Frontend / Backend
+film      draggable horizontal film strip, hover reveals detail      #film
+photo     masonry gallery, click grows the photo into a lightbox     #photo
+tech      floating case-study cards tagged UI/UX / Figma / Frontend  #tech
 ```
 
-Any project opens `ProjectPage.jsx`, which renders differently by kind:
-film **plays the video**, photo **opens the series**, tech **shows the case
-study** (problem / role / process / outcome).
+Any project opens the project dialog (`#project` in `index.html`, filled by
+`js/main.js`), which renders differently by kind: film **plays the video**,
+photo **opens the series**, tech **shows the case study** (problem / role /
+process / outcome). Every room, section and project has a link, e.g.
+`#tech/sage`, and the back button follows along.
+
+Files: `index.html` (all sections; About, Studio, Contact copy),
+`css/style.css`, `js/data.js` (projects), `js/frame.js`, `js/camera.js`,
+`js/main.js`. No build step: `index.html` opens straight from disk.
 
 ---
 
 ## Content rules
 
-All content is in `src/data/projects.js`. Real work only:
+All project content is in `js/data.js`. Real work only:
 
 - **Half Past 10 — Concept Video** · Litto Media, UCSD · Jan–Jul 2026 ·
   producer, videographer, lighting, sound
@@ -153,9 +168,13 @@ All content is in `src/data/projects.js`. Real work only:
 Do not invent projects, clients, metrics, or awards. If a field is unknown,
 leave it out rather than filling it in.
 
-`Frame.jsx` generates procedural artwork for anything without a real image,
-so the site always looks finished. As real files land in `public/`, they take
-over automatically — keep this fallback working.
+`js/frame.js` generates procedural artwork for anything without a real image,
+so the site always looks finished. As real files land in `img/` (video in
+`films/`) and are referenced in `js/data.js`, they take over automatically,
+and a wrong path falls back to the drawn frame — keep this fallback working.
+
+Notes telling her which media to add appear in project pages only when the
+site runs locally (`file://` or localhost). Visitors never see them.
 
 ---
 
@@ -169,23 +188,28 @@ button, and social links. Address: `dwumendez@ucsd.edu`.
 
 ## Task queue
 
-1. **Deploy to GitHub Pages** at `denisejwu.github.io/DJZStudio`. Needs
-   `base: '/DJZStudio/'` in `vite.config.js` and a Pages Actions workflow.
-   Verify the logo and other `public/` assets still resolve under the
-   subpath.
-2. **Real portrait** — swap the placeholder `<svg>` in `About.jsx` for
-   `<img src="img/denise.jpg">`. The comment marking the spot is already
-   there. A photo of her *working* is wanted, not a headshot.
+1. **Deploy to GitHub Pages** at `denisejwu.github.io/DJZStudio`. The
+   workflow (`.github/workflows/deploy.yml`) publishes the site files on every
+   push to `main`; all paths are relative, so the subpath needs no config
+   (checked under a local `/DJZStudio/` server). Remaining: in the repo's
+   Settings → Pages, set Source to "GitHub Actions", merge to `main`, and
+   check the live URL.
+2. **Real portrait** — swap the placeholder `<svg>` in the About section of
+   `index.html` for `<img src="img/denise.jpg">`. The comment marking the
+   spot is already there. A photo of her *working* is wanted, not a headshot.
 3. **Real project media** — poster images, the Half Past 10 cut, graduation
-   and event photos, Sage screens. Fields are `poster`, `video`, `shots`.
-4. **Studio plan cards** — the three Now / Next / Long game cards in
-   `Studio.jsx` are placeholders, marked `EDIT THESE THREE`. Replace with her
-   wording when she supplies it. Don't invent ambition on her behalf.
-5. **Social URLs** — GitHub, Instagram, YouTube in `Contact.jsx` are
-   placeholder links. LinkedIn is real.
-6. **Mobile pass** — check the landing on a phone. The camera canvas plus the
-   identity block is a lot of vertical space; the reading order must stay
-   name → availability → pitch → crafts → camera.
+   and event photos, Sage screens. Fields are `poster`, `video`, `shots` in
+   `js/data.js`.
+4. **Studio plan cards** — the three Now / Next / Long game cards in the
+   Studio section of `index.html` are placeholders, marked `EDIT THESE
+   THREE`. Replace with her wording when she supplies it. Don't invent
+   ambition on her behalf.
+5. **Social URLs** — LinkedIn is real; GitHub points at `denisejwu`, the
+   account that owns this repo. Instagram and YouTube are in `index.html`
+   but `hidden` until she supplies the real profile URLs.
+6. **Mobile pass** — the reading order above is built in, and the landing
+   fits a 360 × 640 screen with no sideways scroll (checked in emulation).
+   Still worth a look on a real phone.
 7. **Apply the brand palette.** See "Brand palette" under Look and feel.
    Blocked on the Tech-color decision.
 
@@ -202,10 +226,14 @@ by URL regardless of any gate.
 
 ## Standing rules
 
-- Ask before adding a dependency. The stack is React, Vite, Tailwind v4,
-  three / @react-three/fiber / drei, framer-motion. Nothing else is needed.
-- Don't commit `node_modules` or `dist` — `.gitignore` covers both.
-- Run `npm run build` before pushing; it should compile with no errors.
+- The stack is plain HTML, CSS and JavaScript: no framework, no build step,
+  no npm packages (rebuilt from React + Three.js on 2026-10-06 at her
+  request). Ask before adding any library or tool. The only outside request
+  is Google Fonts.
+- Scripts are classic `<script defer>` files, not ES modules, so the site
+  still works when `index.html` is opened straight from disk.
+- Before pushing, open the site and click through every stage with the
+  browser console open; it should stay clean.
 - If something can't be done without a file or an account she has to supply,
   say so plainly and tell her exactly what's needed. Don't work around it
   with fake data.

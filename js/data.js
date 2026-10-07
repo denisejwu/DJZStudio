@@ -1,17 +1,17 @@
 /**
  * Every project on the site lives here.
  *
- * Add real media by filling in these fields — until you do, each item
- * renders a procedurally generated frame, so nothing is ever a broken image.
+ * Add real media by filling in these fields. Until you do, each item renders
+ * a procedurally generated frame (js/frame.js), so nothing is ever a broken image.
  *
  *   poster : 'img/half-past-10.jpg'      cover image
  *   video  : 'films/cut.mp4'  or a YouTube URL
  *   shots  : ['img/a.jpg', 'img/b.jpg']  gallery + case-study screens
  *
- * Put files in /public, then reference them without the leading "public".
+ * Paths are relative to index.html: put images in img/ and video in films/.
  */
 
-export const FILM = [
+const FILM = [
   {
     id: "half-past-10",
     title: "Half Past 10 — Concept Video",
@@ -25,22 +25,9 @@ export const FILM = [
     palette: ["#7C3A1E", "#D98B45", "#F3DCC0"],
     kind: "film",
   },
-  {
-    id: "reel-2026",
-    title: "Reel — 2026",
-    client: "DJZ Studios",
-    when: "2026",
-    roles: ["Edit", "Color", "Sound design"],
-    short: "Ninety seconds of everything shot this year.",
-    body: "A cut-down of the year's footage: the concept video, event coverage, and unreleased personal work. Edited to the rhythm of the music rather than the chronology.",
-    poster: null,
-    video: null,
-    palette: ["#8A4526", "#E2A468", "#F7E6CE"],
-    kind: "film",
-  },
 ];
 
-export const PHOTO = [
+const PHOTO = [
   {
     id: "grad-portraits",
     title: "Graduation Portraits",
@@ -69,7 +56,7 @@ export const PHOTO = [
   },
 ];
 
-export const TECH = [
+const TECH = [
   {
     id: "sage",
     title: "Sage / Auriele",
@@ -99,15 +86,15 @@ export const TECH = [
     title: "This Portfolio",
     client: "Design + build",
     when: "2026",
-    tags: ["UI/UX", "Frontend", "Three.js", "Motion"],
+    tags: ["UI/UX", "Frontend", "WebGL", "Motion"],
     short: "A 3D camera you click to open the site.",
     study: {
       problem:
         "Four disciplines can read as unfocused. The landing had to make range look deliberate before anyone reads a word.",
-      role: "Design and build — React, Three.js, Framer Motion.",
+      role: "Design and build — plain HTML, CSS, and JavaScript, no framework.",
       process: [
-        "Modelled a DSLR in Three.js with a clickable lens",
-        "Wrote a shader for the lens: circuits, grid, and pixel blocks",
+        "Built a DSLR from layered CSS 3D transforms, with a clickable lens",
+        "Wrote a WebGL shader for the lens: circuits, grid, and pixel blocks",
         "Built the reveal as a developing Polaroid",
         "Split the work into three scroll-triggered rooms — film, photo, tech",
       ],
@@ -118,38 +105,14 @@ export const TECH = [
     palette: ["#10604A", "#74BBA0", "#E8F3ED"],
     kind: "tech",
   },
-  {
-    id: "spis",
-    title: "Anime Site — SPIS",
-    client: "UCSD Summer Program",
-    when: "Aug 2022",
-    tags: ["Frontend", "Backend", "Flask"],
-    short: "First full-stack build, made with a partner.",
-    study: {
-      problem:
-        "A summer-program brief: ship a real site with a partner, having barely written any web code before.",
-      role: "Front-end programmer and designer, working in a pair.",
-      process: [
-        "Split the build and agreed the page structure",
-        "Designed the layout and styling",
-        "Wired it up in Flask",
-        "Debugged and shipped inside the program timeline",
-      ],
-      outcome:
-        "A working site, and my first experience of full-stack development and collaborative coding.",
-    },
-    shots: [],
-    palette: ["#8A4526", "#E2A468", "#F7E6CE"],
-    kind: "tech",
-  },
 ];
 
-export const ROOMS = [
+const ROOMS = [
   {
     id: "film",
     label: "Film",
     n: "01",
-    accent: "var(--color-film)",
+    accent: "var(--film)",
     heading: "Concept to final cut",
     blurb:
       "Concept development, locations, videography, on-set lighting and sound, and the edit.",
@@ -159,7 +122,7 @@ export const ROOMS = [
     id: "photo",
     label: "Photography",
     n: "02",
-    accent: "var(--color-photo)",
+    accent: "var(--photo)",
     heading: "Stills that hold up",
     blurb:
       "Portrait and event work, planned around the light and finished in Lightroom and Photoshop.",
@@ -169,7 +132,7 @@ export const ROOMS = [
     id: "tech",
     label: "Tech",
     n: "03",
-    accent: "var(--color-tech)",
+    accent: "var(--tech)",
     heading: "Design and build",
     blurb:
       "UX research and Figma prototyping through to front-end and back-end code.",
@@ -177,4 +140,4 @@ export const ROOMS = [
   },
 ];
 
-export const ALL = [...FILM, ...PHOTO, ...TECH];
+const ALL = [...FILM, ...PHOTO, ...TECH];

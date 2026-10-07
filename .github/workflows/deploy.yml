@@ -1,0 +1,46 @@
+name: Deploy to GitHub Pages
+
+# The site is plain HTML, CSS and JavaScript: there is nothing to build.
+# This copies the site files and publishes them as they are.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Everything in the repo is published except notes and source files
+      # that aren't part of the site.
+      - name: Collect the site files
+        run: |
+          rsync -a ./ "$RUNNER_TEMP/site/" \
+            --exclude='.git*' \
+            --exclude='logo/' \
+            --exclude='*.md'
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ${{ runner.temp }}/site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
