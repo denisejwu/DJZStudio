@@ -1,16 +1,363 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DJZ Studios — Denise Wu Mendez</title>
-    <meta name="description" content="Film, photography, and tech by Denise Wu Mendez." />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DJZ Studios — Denise Wu Mendez</title>
+  <meta name="description" content="Film, photography, and tech by Denise Wu Mendez.">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#f8f4ee"><!-- --parchment in css/style.css -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="DJZ Studios — Denise Wu Mendez">
+  <meta property="og:description" content="Film, photography, and tech by Denise Wu Mendez.">
+
+  <!-- Before the stylesheets on purpose: an inline script placed after them waits for them to load. -->
+  <script>
+    // Flag JS early, and keep the camera out of sight if the URL already points past it.
+    document.documentElement.className = "js" + (location.hash.length > 1 ? " deep-link" : "");
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+
+  <noscript>
+    <style>
+      .stage--landing, .stage--polaroid { display: none !important; }
+      .stage--home[hidden] { display: block !important; }
+      .site-header { translate: none !important; opacity: 1 !important; visibility: visible !important; }
+      body[data-stage="landing"] .site-footer { display: flex !important; }
+    </style>
+  </noscript>
+
+  <script src="js/data.js" defer></script>
+  <script src="js/frame.js" defer></script>
+  <script src="js/camera.js" defer></script>
+  <script src="js/main.js" defer></script>
+</head>
+<body data-stage="landing">
+
+  <div class="flash" aria-hidden="true"></div>
+
+  <!-- ============ header (hidden on the landing) ============ -->
+  <header class="site-header">
+    <a class="brand" href="#home" aria-label="DJZ Studios — home">
+      <img src="img/djz-logo.png" alt="" width="620" height="251">
+    </a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="#film" data-nav="film" style="--tone: var(--film)">Film</a>
+      <a href="#photo" data-nav="photo" style="--tone: var(--photo)" aria-label="Photography">Photo<span class="nav-long">graphy</span></a>
+      <a href="#tech" data-nav="tech" style="--tone: var(--tech)">Tech</a>
+      <span class="site-nav__rule" aria-hidden="true"></span>
+      <a href="#about">About</a>
+      <a href="#studio">Studio</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <!-- ============ landing: the camera ============ -->
+  <!-- On phones this reads top to bottom: name, availability, pitch, crafts, camera.
+       Wider screens rearrange it visually (see .landing in css/style.css). -->
+  <main class="stage stage--landing" data-stage="landing" tabindex="-1">
+    <section class="landing" aria-labelledby="landing-name">
+      <div class="landing__glow" aria-hidden="true"></div>
+
+      <h1 class="landing__name" id="landing-name">Denise Wu Mendez</h1>
+      <p class="landing__roles">Filmmaker · Photographer · Product designer · Developer</p>
+      <p class="landing__status"><span class="landing__dot" aria-hidden="true"></span>Open to internships &amp; freelance — San Diego or remote</p>
+      <p class="landing__pitch">Hire me for one craft — or for the handoff between them.</p>
+      <ul class="landing__crafts" aria-label="Crafts">
+        <li style="--tone: var(--film)">Film</li>
+        <li style="--tone: var(--photo)">Photography</li>
+        <li style="--tone: var(--art)">Design</li>
+        <li style="--tone: var(--tech)">Code</li>
+      </ul>
+
+      <div class="camera-stage" id="camera-stage">
+        <div class="cam" id="cam"><!-- built by js/camera.js --></div>
+        <div class="cam-shadow" aria-hidden="true"></div>
+      </div>
+
+      <button class="landing__cta slate" type="button" data-shoot>
+        <span class="for-hover">◎ Click the lens to open the portfolio</span>
+        <span class="for-touch">◎ Tap the lens to open the portfolio</span>
+      </button>
+    </section>
+  </main>
+
+  <!-- ============ polaroid: the shot develops ============ -->
+  <main class="stage stage--polaroid" data-stage="polaroid" tabindex="-1" hidden>
+    <section class="polaroid" aria-label="Get to know my world">
+      <figure class="polaroid__card">
+        <div class="polaroid__photo">
+          <div class="polaroid__exposure"></div>
+          <svg class="polaroid__aperture" viewBox="0 0 200 200" aria-hidden="true">
+            <path pathLength="1" style="--i: 0" d="M100 100L162 100A62 62 0 0 1 131 153.69Z"/>
+            <path pathLength="1" style="--i: 1" d="M100 100L131 153.69A62 62 0 0 1 69 153.69Z"/>
+            <path pathLength="1" style="--i: 2" d="M100 100L69 153.69A62 62 0 0 1 38 100Z"/>
+            <path pathLength="1" style="--i: 3" d="M100 100L38 100A62 62 0 0 1 69 46.31Z"/>
+            <path pathLength="1" style="--i: 4" d="M100 100L69 46.31A62 62 0 0 1 131 46.31Z"/>
+            <path pathLength="1" style="--i: 5" d="M100 100L131 46.31A62 62 0 0 1 162 100Z"/>
+          </svg>
+          <div class="polaroid__chem"></div>
+        </div>
+        <figcaption class="polaroid__caption">Get to know my world.</figcaption>
+      </figure>
+
+      <a class="polaroid__next slate" href="#home">Scroll to explore<span class="polaroid__line" aria-hidden="true"></span></a>
+    </section>
+  </main>
+
+  <!-- ============ home: rooms, about, studio, contact ============ -->
+  <main class="stage stage--home" data-stage="home" tabindex="-1" hidden>
+
+    <section class="rooms" aria-labelledby="rooms-title">
+      <header class="section-head">
+        <span class="slate">Three rooms</span>
+        <h2 id="rooms-title">Pick where to start.</h2>
+        <p>Each one stands on its own. Some projects use two or three together — that's usually where I'm most useful.</p>
+      </header>
+      <ul class="rooms__list" id="room-cards"><!-- js/main.js, from ROOMS in js/data.js --></ul>
+    </section>
+
+    <!-- ---------- about ---------- -->
+    <section class="about" id="about" tabindex="-1" aria-labelledby="about-title">
+      <div class="about__grid">
+        <!-- Replace the placeholder artwork with a photo of Denise working when one is available. -->
+        <figure class="portrait" data-reveal aria-label="Portrait placeholder for Denise Wu Mendez">
+          <div class="portrait__glow" aria-hidden="true"></div>
+          <div class="portrait__frame">
+            <!-- Swap this SVG for: <img src="img/denise.jpg" alt="Denise Wu Mendez working"> -->
+            <svg viewBox="0 0 400 500" aria-hidden="true">
+              <defs>
+                <linearGradient id="portrait-fill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" style="stop-color: var(--golddeep)"/>
+                  <stop offset="48%" style="stop-color: var(--film)"/>
+                  <stop offset="100%" style="stop-color: var(--stock)"/>
+                </linearGradient>
+              </defs>
+              <path fill="url(#portrait-fill)" opacity=".9" d="M200 120c40 0 66 30 66 71 0 26-9 47-20 61 30 12 52 26 68 45 26 31 38 74 42 129H44c4-55 16-98 42-129 16-19 38-33 68-45-11-14-20-35-20-61 0-41 26-71 66-71z"/>
+              <g class="portrait__rings">
+                <circle cx="200" cy="187" r="98"/>
+                <circle cx="200" cy="187" r="130"/>
+                <path d="M102 187H52M348 187h50M200 57V25"/>
+              </g>
+            </svg>
+            <span class="slate portrait__note">Portrait placeholder · photo of Denise working goes here</span>
+          </div>
+        </figure>
+
+        <div class="about__text" data-reveal style="--d: .1s">
+          <span class="slate eyebrow">About</span>
+          <h2 class="section-title" id="about-title">Denise Wu Mendez</h2>
+          <ul class="soft-tags">
+            <li>Product designer</li>
+            <li>Visual storyteller</li>
+            <li>Creative technologist</li>
+          </ul>
+          <p>I spend as much time behind a camera as in a code editor. I produced a quarter-long concept video for a campus dance club — finding the locations, shaping the idea, shooting it, running lighting and sound — and I photograph graduations and events on my own.</p>
+          <p>On the other side of the desk I run DJZ Studios, where I'm designing and building Sage/Auriele, a language-learning app that brings reading, writing, grammar, and speaking into one place. I do the research, the wireframes, the prototypes, and the code.</p>
+          <p>What I'm actually good at is figuring out how to make something happen with whatever's available — a borrowed light, a free afternoon, a first draft of a feature. That's the thread through all of it.</p>
+
+          <!-- capability rail: each craft stands alone; the dashed line is an optional connection -->
+          <ul class="rail">
+            <li style="--tone: var(--film)"><b>Film</b>concept · shoot · edit</li>
+            <li style="--tone: var(--photo)"><b>Photography</b>portraits · events</li>
+            <li style="--tone: var(--art)"><b>Design</b>research · UI · Figma</li>
+            <li style="--tone: var(--tech)"><b>Code</b>front-end · back-end</li>
+          </ul>
+          <p class="rail__note">Each stands on its own — connected when a project calls for it.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- studio ---------- -->
+    <section class="studio" id="studio" tabindex="-1" aria-labelledby="studio-title">
+      <div class="studio__grid">
+        <div class="studio__mark" data-reveal="soft">
+          <div class="studio__halo" aria-hidden="true"></div>
+          <img class="studio__logo" src="img/djz-logo.png" alt="DJZ Studios" width="620" height="251">
+          <span class="slate">Founded 2026 · San Diego</span>
+        </div>
+
+        <div class="studio__text" data-reveal style="--d: .1s">
+          <span class="slate eyebrow">The studio</span>
+          <h2 class="section-title" id="studio-title">What DJZ Studios is for.</h2>
+          <p>DJZ Studios is the name I put on my own work — where the film, the photography, the design, and the code stop being separate hobbies and start being one practice. Right now it's me. The point of naming it was to hold the work to a standard, and to give it somewhere to grow.</p>
+        </div>
+      </div>
+
+      <!-- EDIT THESE THREE — they carry more weight in your own words than in mine. -->
+      <ol class="plan">
+        <li class="plan__card" data-reveal style="--tone: var(--tech); --d: .15s">
+          <span class="plan__when slate">Now</span>
+          <h3>Build Sage / Auriele properly</h3>
+          <p>Finish the first full curriculum loop — reading, writing, grammar, speaking — and get it in front of real learners for feedback.</p>
+        </li>
+        <li class="plan__card" data-reveal style="--tone: var(--film); --d: .25s">
+          <span class="plan__when slate">Next</span>
+          <h3>Take on client work</h3>
+          <p>Concept videos, event and portrait shoots, and product design for small teams — the kind of project where one person carrying it across crafts is an advantage.</p>
+        </li>
+        <li class="plan__card" data-reveal style="--tone: var(--art); --d: .35s">
+          <span class="plan__when slate">The long game</span>
+          <h3>A studio that makes its own things</h3>
+          <p>Original short films and apps released under the DJZ name, with the tools and the visual language built in-house.</p>
+        </li>
+      </ol>
+
+      <div class="studio__cta">
+        <p>If any of that overlaps with what you're building, I'd rather hear about it early.</p>
+        <a class="btn btn--outline" href="#contact" style="--tone: var(--tech)"><span class="dot" aria-hidden="true"></span>Start a conversation</a>
+      </div>
+    </section>
+
+    <!-- ---------- contact: email only, no form ---------- -->
+    <section class="contact" id="contact" tabindex="-1" aria-labelledby="contact-title">
+      <div class="contact__inner" data-reveal>
+        <span class="slate eyebrow">Contact</span>
+        <h2 class="section-title" id="contact-title">Looking to hire?</h2>
+        <p class="contact__lede">Open to internships and freelance work in production, design, and development — San Diego or remote.</p>
+
+        <a class="contact__email" href="mailto:dwumendez@ucsd.edu">dwumendez@ucsd.edu</a>
+        <div>
+          <button class="contact__copy" type="button" data-copy="dwumendez@ucsd.edu">Copy address</button>
+          <span class="visually-hidden" id="copy-status" role="status"></span>
+        </div>
+
+        <p class="contact__lede">One click opens your email app with the subject filled in. Prefer to write it yourself? The address is right there.</p>
+        <div class="contact__actions">
+          <a class="btn btn--primary" href="mailto:dwumendez@ucsd.edu?subject=Role%20or%20project%20%E2%80%94%20DJZ%20Studios"><span class="dot" aria-hidden="true"></span>Email me about a role</a>
+          <a class="btn btn--gold" href="mailto:dwumendez@ucsd.edu?subject=Project%20inquiry%20%E2%80%94%20DJZ%20Studios"><span class="dot" aria-hidden="true"></span>Email me about a project</a>
+        </div>
+
+        <ul class="socials">
+          <li>
+            <a href="https://linkedin.com/in/denise-wu-mendez" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-.95 1.83-1.95 3.77-1.95 4.03 0 4.78 2.5 4.78 5.76V21h-4v-5.6c0-1.34-.03-3.07-1.9-3.07-1.9 0-2.2 1.46-2.2 2.97V21H9z"/></svg>
+              LinkedIn
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/denisejwu" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5a12 12 0 0 0-3.79 23.4c.6.1.82-.26.82-.58v-2.2c-3.34.72-4.04-1.4-4.04-1.4-.55-1.4-1.34-1.78-1.34-1.78-1.1-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.84 2.8 1.3 3.49 1 .1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.34-5.47-5.96 0-1.32.47-2.4 1.24-3.24-.13-.3-.54-1.52.12-3.18 0 0 1-.32 3.3 1.24a11.4 11.4 0 0 1 6 0c2.3-1.56 3.3-1.24 3.3-1.24.66 1.66.25 2.88.12 3.18.77.84 1.23 1.92 1.23 3.24 0 4.63-2.8 5.65-5.48 5.95.43.37.81 1.1.81 2.22v3.29c0 .32.21.69.83.57A12 12 0 0 0 12 .5z"/></svg>
+              GitHub
+            </a>
+          </li>
+          <!-- Instagram and YouTube stay hidden until the real profile URLs are in.
+               Put them in the hrefs below, then delete the `hidden` attribute. -->
+          <li hidden>
+            <a href="https://instagram.com/" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41-.56-.22-.96-.48-1.38-.9-.42-.42-.68-.82-.9-1.38-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16zm0 5.68A4.16 4.16 0 1 0 16.16 12 4.16 4.16 0 0 0 12 7.84zm0 6.86A2.7 2.7 0 1 1 14.7 12a2.7 2.7 0 0 1-2.7 2.7zm5.3-7.03a.97.97 0 1 1-.97-.97.97.97 0 0 1 .97.97z"/></svg>
+              Instagram
+            </a>
+          </li>
+          <li hidden>
+            <a href="https://youtube.com/" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23 12s0-3.6-.46-5.32a2.77 2.77 0 0 0-1.95-1.96C18.87 4.25 12 4.25 12 4.25s-6.87 0-8.59.47a2.77 2.77 0 0 0-1.95 1.96C1 8.4 1 12 1 12s0 3.6.46 5.32a2.77 2.77 0 0 0 1.95 1.96c1.72.47 8.59.47 8.59.47s6.87 0 8.59-.47a2.77 2.77 0 0 0 1.95-1.96C23 15.6 23 12 23 12zM9.75 15.27V8.73L15.5 12z"/></svg>
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ rooms: film, photo, tech share this <main> ============ -->
+  <main class="stage stage--room" data-stage="room" tabindex="-1" hidden>
+    <div class="room__back"><a href="#home">← All rooms</a></div>
+
+    <section class="room room--film" data-room="film" aria-labelledby="film-title" hidden>
+      <header class="room__head">
+        <span class="slate" style="color: var(--film)">01 — Film</span>
+        <h2 class="section-title" id="film-title">The strip.</h2>
+        <p>
+          <span class="if-scrollable">Drag it sideways. </span>
+          <span class="for-hover">Hover a frame for the detail, click to open the project.</span>
+          <span class="for-touch">Tap a frame to open the project.</span>
+        </p>
+      </header>
+      <div class="strip">
+        <div class="perf" aria-hidden="true"></div>
+        <div class="strip__edge" aria-hidden="true"><span>DJZ · 24 fps</span><span>Reel one</span></div>
+        <ul class="strip__track" id="film-track"><!-- js/main.js, from FILM in js/data.js --></ul>
+        <div class="strip__edge" aria-hidden="true">
+          <span><span class="for-hover">Click</span><span class="for-touch">Tap</span> a frame to open</span>
+          <span>Safety film · KEEP</span>
+        </div>
+        <div class="perf" aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <section class="room room--photo" data-room="photo" aria-labelledby="photo-title" hidden>
+      <header class="room__head">
+        <span class="slate" style="color: var(--photo)">02 — Photography</span>
+        <h2 class="section-title" id="photo-title">The gallery.</h2>
+        <p>A working gallery of portraits and events. New photographs will replace the designed contact sheets as the files arrive.</p>
+      </header>
+      <div class="room__wide">
+        <ul class="series" id="photo-series" aria-label="Series"></ul>
+        <div class="masonry" id="photo-masonry"><!-- js/main.js, from PHOTO in js/data.js --></div>
+      </div>
+    </section>
+
+    <section class="room room--tech" data-room="tech" aria-labelledby="tech-title" hidden>
+      <header class="room__head">
+        <span class="slate" style="color: var(--tech)">03 — Tech</span>
+        <h2 class="section-title" id="tech-title">The case studies.</h2>
+        <p>What the problem was, what I did, and where it stands. Click any card for the full read.</p>
+      </header>
+      <div class="room__wide">
+        <ul class="tech-grid" id="tech-cards"><!-- js/main.js, from TECH in js/data.js --></ul>
+      </div>
+    </section>
+
+    <!-- every room ends with a way to get in touch -->
+    <div class="room-cta">
+      <p>Seen something you'd want made for you?</p>
+      <a class="btn btn--primary" href="#contact"><span class="dot" aria-hidden="true"></span>Get in touch</a>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <span>DJZ Studios · San Diego, CA</span>
+    <span>Film · Photo · Tech · Art</span>
+    <a href="mailto:dwumendez@ucsd.edu">dwumendez@ucsd.edu</a>
+  </footer>
+
+  <!-- ============ overlays ============ -->
+
+  <!-- a project, opened from any room: film plays, photo shows the series, tech shows the case study -->
+  <dialog class="project" id="project" aria-labelledby="project-title">
+    <div class="project__scrim" data-dismiss></div>
+    <article class="project__card">
+      <button class="project__close" type="button" data-dismiss aria-label="Close">×</button>
+      <header class="project__head">
+        <p class="slate project__meta" id="project-meta"></p>
+        <h2 id="project-title"></h2>
+        <ul class="chips" id="project-chips"></ul>
+        <p class="project__body" id="project-body"></p>
+      </header>
+      <div class="project__content" id="project-content"></div>
+    </article>
+  </dialog>
+
+  <!-- a single photograph, enlarged -->
+  <dialog class="lightbox" id="lightbox" aria-label="Enlarged photograph">
+    <div class="lightbox__scrim" data-dismiss></div>
+    <button class="lightbox__close" type="button" data-dismiss aria-label="Close">×</button>
+    <div class="lightbox__panel">
+      <div class="lightbox__media" id="lightbox-media"></div>
+      <div class="lightbox__info">
+        <div>
+          <p class="slate" id="lightbox-meta"></p>
+          <p class="lightbox__short" id="lightbox-short"></p>
+        </div>
+        <a class="btn btn--primary btn--small" id="lightbox-series" href="#photo">About this series</a>
+      </div>
+    </div>
+  </dialog>
+
+</body>
 </html>
