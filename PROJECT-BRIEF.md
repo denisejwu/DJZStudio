@@ -47,14 +47,16 @@ the same tokens.
 
 | Token | Use |
 |---|---|
-| `parchment` `cream` `sand` `linen` | backgrounds, cards |
-| `ink` `body` | text — `body` is the readable brown for paragraphs |
-| `gold` `goldlite` `golddeep` | brand metal, accents, small caps labels |
+| `parchment` | the page ground (`#f8f4ee`, brand) |
+| `cream` `sand` `linen` | cards, panels |
+| `ink` `body` | text — both green-slate (`#2a3b36`, brand) |
+| `accent` | deep teal (`#1f4c4c`, brand): links, buttons, focus ring |
+| `gold` `goldlite` `golddeep` | brand metal, small caps labels |
 | `film` (clay red) | anything Film |
 | `photo` (amber) | anything Photography |
-| `tech` (emerald) | anything Tech |
+| `tech` | anything Tech — the same teal as `accent` |
 | `art` (plum) | anything Design/Art |
-| `stock` | dark film-stock backgrounds |
+| `stock` | dark film-stock backgrounds, and the source of every shadow |
 
 - Type: **Fraunces** display, **Space Grotesk** body, **JetBrains Mono** for
   small-caps labels (`.slate`).
@@ -64,34 +66,37 @@ the same tokens.
   No bouncing, no aggressive parallax.
 - `prefers-reduced-motion` is respected globally. Keep it that way.
 
-### Brand palette (supplied 2026-09-12, not yet applied)
+### Brand palette (supplied 2026-09-12, applied 2026-10-06)
 
-The official DJZ palette. Once applied it replaces the brown/parchment
-neutrals above; until then `css/style.css` still holds the old values.
+The official DJZ palette, now in `:root`. It replaced the old brown/parchment
+neutrals (`#fbf6ec` ground, `#161210` / `#3b322b` text).
 
-| Hex | Name | Proposed role | Contrast on `#f8f4ee` |
+| Hex | Name | Role | Contrast on `#f8f4ee` |
 |---|---|---|---|
 | `#f8f4ee` | warm off-white | page ground → `parchment` | — |
 | `#2a3b36` | green-slate | text → `ink` / `body` | 10.8 : 1 |
-| `#1f4c4c` | deep teal | primary accent: links, buttons, focus ring | 8.7 : 1 |
+| `#1f4c4c` | deep teal | `accent`: links, buttons, focus ring; also `tech` | 8.7 : 1 |
 
 - Gold stays the brand metal: the logo and small metallic details only.
   `gold` (`#b98a25`) is 2.85 : 1 on the ground, so never use it for
   body-size text. Use `golddeep` (6.05 : 1) when text needs to be gold.
 - The two dark colors are for text and accents, **never** page backgrounds.
   The light-theme rule above still stands.
-- **Open decision:** `#1f4c4c` and the `tech` emerald `#0f6b52` are only
-  1.48 : 1 apart, so a teal primary accent would swallow Tech's color
-  coding. Either Tech adopts the teal, or Tech moves to a clearly distinct
-  hue. Ask Denise before applying.
-- Moving text from warm brown to green-slate cools the site. Check that it
-  still reads as warm and premium once applied.
-- Every color is already on a token (done in the 2026-10-06 rebuild), so
-  applying the palette means changing token values in `:root`, plus the
-  `theme-color` meta in `index.html`. Per-project `palette` arrays in
-  `js/data.js` are artwork for the drawn frames, not UI colors.
-- Related: `photo` amber (`#b8791c`) is about 3.6 : 1 on cream, below AA for
-  the small labels and chips that use it. Worth settling in the same pass.
+- **Decided (2026-10-06): Tech adopted the teal.** The old emerald
+  (`#0f6b52`) was only 1.48 : 1 from it. The two Tech projects' drawn
+  artwork (`palette` in `js/data.js`) moved to the teal family to match, and
+  the lens shader's green (`--lens-green`) is a lit teal.
+- Keeping it warm after the move to green-slate text: shadows, the camera's
+  floor shadow and the lines in drawn frames come from `stock` (warm brown),
+  not `ink`. The landing glow and the Contact band are gold tints — a teal
+  tint there read as a cool grey haze.
+- Teal and the green-slate text are only 1.24 : 1 apart, so teal *text*
+  stands out by hue alone. Let buttons, tags and fills carry the accent;
+  don't rely on teal text color by itself to mark something as a link.
+- If the palette changes again, it's token values in `:root` plus the
+  `theme-color` meta in `index.html`.
+- Still open: `photo` amber (`#b8791c`) is about 3.6 : 1 on cream, below AA
+  for the small labels and chips that use it.
 
 ---
 
@@ -210,8 +215,8 @@ button, and social links. Address: `dwumendez@ucsd.edu`.
 6. **Mobile pass** — the reading order above is built in, and the landing
    fits a 360 × 640 screen with no sideways scroll (checked in emulation).
    Still worth a look on a real phone.
-7. **Apply the brand palette.** See "Brand palette" under Look and feel.
-   Blocked on the Tech-color decision.
+7. ~~Apply the brand palette.~~ Done 2026-10-06; Tech adopted the teal. See
+   "Brand palette" under Look and feel.
 
 ## Later, only when there's real work for it
 

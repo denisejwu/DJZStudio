@@ -92,7 +92,7 @@ function drawFrame(cv, project, ratio = 1.5, width = 640) {
   const x = cv.getContext("2d", { willReadFrequently: true });
   const [a, b, c] = project.palette;
   const s = w / 320;
-  const ink = tokenRGB("--ink", [22, 18, 16]);
+  const ink = tokenRGB("--stock", [36, 28, 22]); // the warm dark, for lines and vignette
   const light = tokenRGB("--light", [255, 246, 228]);
 
   const g = x.createLinearGradient(0, h, w, 0);

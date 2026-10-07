@@ -78,7 +78,7 @@ const TECH = [
         "In active build — the first end-to-end curriculum loop is designed and lesson delivery is working.",
     },
     shots: [],
-    palette: ["#0C4F3D", "#68B398", "#E3F0EA"],
+    palette: ["#163E3E", "#5E9E9A", "#E3EFEE"],
     kind: "tech",
   },
   {
@@ -102,7 +102,7 @@ const TECH = [
         "A portfolio where the interaction itself is a work sample.",
     },
     shots: [],
-    palette: ["#10604A", "#74BBA0", "#E8F3ED"],
+    palette: ["#1F4C4C", "#70AEA9", "#E8F2F1"],
     kind: "tech",
   },
 ];

@@ -9,14 +9,17 @@
 /* ---------- tokens ---------- */
 
 :root {
+  /* brand palette (PROJECT-BRIEF.md): ground, text, and the one accent */
+  --parchment: #f8f4ee;  /* warm off-white: the page */
+  --ink: #2a3b36;        /* green-slate: headings */
+  --body: #2a3b36;       /* green-slate: paragraphs */
+  --accent: #1f4c4c;     /* deep teal: links, buttons, focus ring, and Tech */
+
   /* neutrals */
-  --parchment: #fbf6ec;
   --cream: #fffdf8;
   --sand: #f3e8d8;
   --linen: #e8dac3;
-  --ink: #161210;
-  --body: #3b322b;
-  --stock: #241c16;      /* film-stock dark: the strip, the camera body */
+  --stock: #241c16;      /* film-stock dark: the strip, the camera body, shadows */
   --paper: #fdfbf5;      /* Polaroid border */
   --emulsion: #e8e2d4;   /* an undeveloped Polaroid */
   --light: #fff6e4;      /* warm white: text on stock, highlights */
@@ -29,13 +32,13 @@
   /* one accent per craft */
   --film: #a9552f;
   --photo: #b8791c;
-  --tech: #0f6b52;
+  --tech: var(--accent);
   --art: #6e3145;
 
   /* the lens shader (read by js/camera.js) */
   --lens-deep: #0b1419;
   --lens-gold: #c89842;
-  --lens-green: #1d8b69;
+  --lens-green: #2f7f7c;  /* a lit version of the teal */
 
   /* mixed from the tokens above */
   --stock-hi: color-mix(in srgb, var(--stock), white 7%);
@@ -43,11 +46,12 @@
   --stock-deep: color-mix(in srgb, var(--stock), black 58%);
   --line: color-mix(in srgb, var(--ink) 14%, transparent);
   --line-soft: color-mix(in srgb, var(--ink) 9%, transparent);
-  --gold-wash: color-mix(in srgb, var(--gold) 13%, transparent);
-  --shadow-sm: 0 14px 30px -24px color-mix(in srgb, var(--ink) 80%, transparent);
-  --shadow-md: 0 20px 44px -34px color-mix(in srgb, var(--ink) 60%, transparent);
-  --shadow-lg: 0 36px 60px -34px color-mix(in srgb, var(--ink) 55%, transparent);
-  --shadow-xl: 0 50px 90px -40px color-mix(in srgb, var(--ink) 78%, transparent);
+  --accent-wash: color-mix(in srgb, var(--accent) 9%, transparent);
+  /* shadows come from the warm stock, not the green-slate text, so the page stays warm */
+  --shadow-sm: 0 14px 30px -24px color-mix(in srgb, var(--stock) 80%, transparent);
+  --shadow-md: 0 20px 44px -34px color-mix(in srgb, var(--stock) 60%, transparent);
+  --shadow-lg: 0 36px 60px -34px color-mix(in srgb, var(--stock) 55%, transparent);
+  --shadow-xl: 0 50px 90px -40px color-mix(in srgb, var(--stock) 78%, transparent);
 
   /* the logo on cream — never on a dark plate */
   --logo-filter: saturate(1.16) contrast(1.1) brightness(.93) drop-shadow(0 0 .7px rgba(58, 36, 8, .9)) drop-shadow(0 16px 26px rgba(122, 86, 16, .3));
@@ -106,7 +110,7 @@ figure { margin: 0; }
 dialog { max-width: none; max-height: none; padding: 0; border: 0; background: none; color: inherit; }
 [hidden] { display: none !important; }
 
-:focus-visible { outline: 2px solid var(--golddeep); outline-offset: 3px; border-radius: 3px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
 [tabindex="-1"]:focus { outline: none; }
 ::selection { background: var(--goldlite); color: var(--ink); }
 
@@ -161,8 +165,8 @@ body::after {
 }
 .btn:hover { translate: 0 -2px; }
 .btn .dot { flex: none; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
-.btn--ink { background: var(--ink); color: var(--parchment); }
-.btn--ink .dot { background: var(--goldlite); }
+.btn--primary { background: var(--accent); color: var(--parchment); }
+.btn--primary .dot { background: var(--goldlite); }
 .btn--gold { border-color: var(--gold); color: var(--ink); }
 .btn--gold:hover { border-color: var(--golddeep); background: var(--golddeep); color: var(--cream); }
 .btn--outline { border-color: var(--tone); color: var(--tone); }
@@ -236,7 +240,7 @@ body[data-stage="landing"] .site-header { translate: 0 -100%; opacity: 0; visibi
   color: var(--body);
   transition: background-color .2s, color .2s;
 }
-.site-nav a:hover { background: var(--gold-wash); }
+.site-nav a:hover { background: var(--accent-wash); }
 .site-nav a[aria-current="page"] { color: var(--tone); }
 .site-nav__rule { width: 1px; height: 16px; margin: 0 4px; background: var(--line); }
 
@@ -283,7 +287,7 @@ body[data-stage="landing"] .site-header { translate: 0 -100%; opacity: 0; visibi
   background: radial-gradient(
     closest-side,
     color-mix(in srgb, var(--goldlite) 55%, transparent),
-    color-mix(in srgb, var(--tech) 6%, transparent) 58%,
+    color-mix(in srgb, var(--goldlite) 12%, transparent) 58%,
     transparent 74%
   );
   pointer-events: none;
@@ -616,8 +620,8 @@ body[data-stage="landing"] .site-header { translate: 0 -100%; opacity: 0; visibi
   border-radius: 50%;
   background: radial-gradient(
     closest-side,
-    color-mix(in srgb, var(--body) 42%, transparent),
-    color-mix(in srgb, var(--body) 12%, transparent) 60%,
+    color-mix(in srgb, var(--stock) 40%, transparent),
+    color-mix(in srgb, var(--stock) 12%, transparent) 60%,
     transparent
   );
   scale: calc(1 - var(--lift, 0) * 1.6);
@@ -642,7 +646,7 @@ body[data-stage="landing"] .site-header { translate: 0 -100%; opacity: 0; visibi
   padding: 16px 16px 64px;
   border-radius: 4px;
   background: var(--paper);
-  box-shadow: 0 44px 80px -40px color-mix(in srgb, var(--ink) 70%, transparent);
+  box-shadow: 0 44px 80px -40px color-mix(in srgb, var(--stock) 70%, transparent);
   rotate: -2deg;
   cursor: pointer;
   animation: eject 1.6s cubic-bezier(.16, .84, .3, 1) backwards;
@@ -848,7 +852,7 @@ body[data-stage="landing"] .site-header { translate: 0 -100%; opacity: 0; visibi
   border: 1px solid var(--line);
   border-radius: 16px;
   background: var(--cream);
-  box-shadow: 0 18px 36px -30px color-mix(in srgb, var(--ink) 60%, transparent);
+  box-shadow: 0 18px 36px -30px color-mix(in srgb, var(--stock) 60%, transparent);
 }
 .plan__card:hover { translate: 0 -6px; }
 .plan__when {
@@ -869,7 +873,7 @@ body[data-stage="landing"] .site-header { translate: 0 -100%; opacity: 0; visibi
 .contact {
   padding: 112px var(--gutter);
   text-align: center;
-  background: linear-gradient(180deg, var(--parchment), color-mix(in srgb, var(--tech) 7%, var(--parchment)), var(--parchment));
+  background: linear-gradient(180deg, var(--parchment), color-mix(in srgb, var(--goldlite) 14%, var(--parchment)), var(--parchment));
 }
 .contact__inner { max-width: 768px; margin: 0 auto; }
 .contact__lede { max-width: 54ch; margin: 20px auto 0; }
@@ -888,7 +892,7 @@ body[data-stage="landing"] .site-header { translate: 0 -100%; opacity: 0; visibi
 .contact__copy {
   margin-top: 12px;
   font-size: 15px;
-  color: var(--golddeep);
+  color: var(--accent);
   text-decoration: underline;
   text-underline-offset: 4px;
   transition: color .2s;
@@ -915,7 +919,7 @@ body[data-stage="landing"] .site-header { translate: 0 -100%; opacity: 0; visibi
    ========================================================================== */
 
 .room__back { max-width: 1024px; margin: 0 auto 24px; padding: 0 var(--gutter); }
-.room__back a { font-size: 15px; color: var(--golddeep); transition: color .2s; }
+.room__back a { font-size: 15px; color: var(--accent); transition: color .2s; }
 .room__back a:hover { color: var(--ink); }
 .room { padding-bottom: 112px; }
 .room__head { max-width: 1024px; margin: 0 auto; padding: 0 var(--gutter) 40px; }
@@ -932,7 +936,7 @@ body[data-stage="landing"] .site-header { translate: 0 -100%; opacity: 0; visibi
 .strip {
   padding: 16px 0;
   background: linear-gradient(180deg, var(--stock-hi), var(--stock) 50%, var(--stock-lo));
-  box-shadow: 0 26px 60px -34px color-mix(in srgb, var(--ink) 85%, transparent);
+  box-shadow: 0 26px 60px -34px color-mix(in srgb, var(--stock) 85%, transparent);
 }
 .strip :focus-visible { outline-color: var(--goldlite); }
 /* sprocket holes */
@@ -1087,12 +1091,12 @@ body[data-stage="landing"] .site-header { translate: 0 -100%; opacity: 0; visibi
   border: 1px solid var(--line-soft);
   border-radius: 16px;
   background: var(--cream);
-  box-shadow: 0 22px 44px -30px color-mix(in srgb, var(--ink) 55%, transparent);
+  box-shadow: 0 22px 44px -30px color-mix(in srgb, var(--stock) 55%, transparent);
   transition: transform .5s var(--ease), box-shadow .5s;
 }
 .tech-card:hover .tech-card__box, .tech-card:focus-visible .tech-card__box {
   transform: perspective(900px) translateY(-14px) rotateX(4deg) rotateY(-4deg);
-  box-shadow: 0 40px 64px -32px color-mix(in srgb, var(--ink) 50%, transparent);
+  box-shadow: 0 40px 64px -32px color-mix(in srgb, var(--stock) 50%, transparent);
 }
 .tech-card__art { display: block; aspect-ratio: 4 / 3; overflow: hidden; background: var(--sand); }
 .tech-card__art > * { width: 100%; height: 100%; object-fit: cover; transition: scale .7s var(--ease); }
@@ -1167,7 +1171,7 @@ body[data-stage="landing"] .site-header { translate: 0 -100%; opacity: 0; visibi
   color: var(--ink);
   transition: background-color .2s;
 }
-.project__close:hover { background: var(--gold-wash); }
+.project__close:hover { background: var(--accent-wash); }
 .project__head { padding: 36px 40px 24px; border-bottom: 1px solid var(--line); }
 .project__meta { padding-right: 48px; color: var(--golddeep); }
 .project__head h2 { margin-top: 8px; padding-right: 40px; font-size: clamp(26px, 3.2vw, 40px); }
